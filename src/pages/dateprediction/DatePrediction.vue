@@ -5,11 +5,11 @@
   <div class="container content-prediction">
     <div class="sisi-kiri">
       <p>Pilih Tanggal</p>
-      <datepicker 
+      <datepicker
         v-model="date" 
         value-type="format" 
         format="YYYY-MM-DD"
-        :disabled-date="disabledAfterToday"
+        :upperLimit="tomorrow"
         style="
           box-sizing: border-box;
           padding: 5px;
@@ -148,6 +148,7 @@
 import axios from 'axios'
 import BeatLoader from 'vue-spinner/src/BeatLoader.vue'
 import Datepicker from 'vue3-datepicker'
+import { add } from 'date-fns'
 
 export default {
   name: "dateprediction",
@@ -165,23 +166,18 @@ export default {
       date: new Date(), //.toISOString().split('T')[0],
       pickedDate: '',
       newsByDate: null,
-      limit: 10
+      limit: 10,
+      tomorrow: add(new Date(),{days: 0 })
     }
   },
   methods: {
     resetData () {
       this.predict = {}
       this.limit = 10
-      this.date = new Date().toISOString().split('T')[0]
+      this.date = new Date() //.toISOString().split('T')[0]
     },
     showClikedNer (idx) {
       this.idx_result = idx
-    },
-    disabledAfterToday (date) {
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-
-      return date > new Date(today.getTime())
     },
     getPredictByDate () {
       this.loading = true
@@ -277,12 +273,12 @@ export default {
   --vdp-elem-color: currentColor;
   --vdp-disabled-color: #d5d9e0;
   --vdp-hover-color: #ffffff;
-  --vdp-hover-bg-color: #0baf74;
+  --vdp-hover-bg-color: #1B2B47;
   --vdp-selected-color: #ffffff;
-  --vdp-selected-bg-color: #0baf74;
-  --vdp-elem-font-size: 0.8em;
+  --vdp-selected-bg-color: #006eff;
+  --vdp-elem-font-size: 0.9em;
   --vdp-elem-border-radius: 3px;
-  --vdp-divider-color: #d5d9;
+  --vdp-divider-color: #1B2B47;
 }
 
 

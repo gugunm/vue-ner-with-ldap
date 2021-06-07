@@ -72,6 +72,7 @@ export default {
     
     localStorage.setItem('token', responseData.api_token);
     localStorage.setItem('userId', responseData.message.user_nip);
+    localStorage.setItem('imageLink', responseData.broadcast.images);
     localStorage.setItem('tokenExpiration', expirationDate);
 
     timer = setTimeout(function() {
@@ -80,12 +81,14 @@ export default {
 
     context.commit('setUser', {
       token: responseData.api_token,
-      userId: responseData.message.user_nip
+      userId: responseData.message.user_nip,
+      imageLink: responseData.broadcast.images
     });
   },
   tryLogin(context) {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
+    const imageLink = localStorage.getItem('imageLink');
     const tokenExpiration = localStorage.getItem('tokenExpiration');
 
     const expiresIn = +tokenExpiration - new Date().getTime();
@@ -98,23 +101,26 @@ export default {
       context.dispatch('autoLogout');
     }, expiresIn);
 
-    if (token && userId) {
+    if (token && userId && imageLink) {
       context.commit('setUser', {
         token: token,
-        userId: userId
+        userId: userId,
+        imageLink: imageLink
       });
     }
   },
   logout(context) {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('imageLink');
     localStorage.removeItem('tokenExpiration');
 
     clearTimeout(timer);
 
     context.commit('setUser', {
       token: null,
-      userId: null
+      userId: null,
+      imageLink: null
     });
   },
   autoLogout(context) {

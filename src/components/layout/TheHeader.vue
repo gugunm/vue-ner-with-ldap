@@ -18,6 +18,9 @@
         <li v-if="isLoggedIn">
           <base-button @click="logout">Logout</base-button>
         </li>
+        <!-- <li>
+          <img :src="imageLink" alt="">
+        </li> -->
       </ul>
     </nav>
   </header>
@@ -25,6 +28,11 @@
 
 <script>
 export default {
+  data () {
+    return {
+      imageLink: this.$store.getters.imageLink ? this.$store.getters.imageLink : null
+    }
+  },
   computed: {
     isLoggedIn() {
       return this.$store.getters.isAuthenticated;

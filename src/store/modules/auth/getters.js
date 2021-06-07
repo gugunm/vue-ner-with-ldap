@@ -5,6 +5,9 @@ export default {
   token(state) {
     return state.token;
   },
+  imageLink(state) {
+    return state.imageLink;
+  },
   isAuthenticated(state) {
     return !!state.token;
   },

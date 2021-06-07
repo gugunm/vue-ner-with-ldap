@@ -15,6 +15,7 @@
     "vue-router": "^4.0.0-0",
     "vue-spinner": "^1.0.4",
     "vue3-datepicker": "^0.2.4",
+    "vuejs3-datepicker": "0.0.6",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
