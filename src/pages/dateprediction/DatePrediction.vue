@@ -5,14 +5,25 @@
   <div class="container content-prediction">
     <div class="sisi-kiri">
       <p>Pilih Tanggal</p>
-      <date-picker 
-        class="date-picker" 
+      <datepicker 
         v-model="date" 
         value-type="format" 
         format="YYYY-MM-DD"
         :disabled-date="disabledAfterToday"
+        style="
+          box-sizing: border-box;
+          padding: 5px;
+          width: 100%; 
+          color: #555;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+          height: 34px;
+          padding: 6px 30px;
+          padding-left: 10px;
+        "
         >
-      </date-picker>
+      </datepicker>
       <p>Jumlah Berita</p>
       <div class="jml-berita">
         <input type="text" name="jml-berita" v-model="limit" @keyup.enter="getPredictByDate">
@@ -136,13 +147,13 @@
 <script>
 import axios from 'axios'
 import BeatLoader from 'vue-spinner/src/BeatLoader.vue'
-import DatePicker from 'vue3-datepicker'
+import Datepicker from 'vue3-datepicker'
 
 export default {
   name: "dateprediction",
   components: {
     BeatLoader,
-    DatePicker
+    Datepicker
   },
   data () {
     return {
@@ -152,6 +163,7 @@ export default {
       loading: false,
       color: '#1B2B47',
       date: new Date(), //.toISOString().split('T')[0],
+      pickedDate: '',
       newsByDate: null,
       limit: 10
     }
@@ -173,13 +185,14 @@ export default {
     },
     getPredictByDate () {
       this.loading = true
-      this.predict = this.getPredictionFromBackend(this.date)
+      this.pickedDate = this.date.toISOString().split('T')[0],
+      this.predict = this.getPredictionFromBackend()
     },
     getPredictionFromBackend () {
       const path = `http://192.168.75.145:5000/api/predict-by-date`
       return axios.get(path, {
         params: {
-          tgl: this.date,
+          tgl: this.pickedDate,
           limit: this.limit
         }
       })
@@ -187,8 +200,6 @@ export default {
         // this.predict = JSON.parse(JSON.stringify(response.data))
         this.predict = response.data
         this.loading = false
-        console.log('DATAAAA')
-        console.log(response.data)
       })
       .catch(error => {
         console.log(error)
@@ -255,7 +266,23 @@ export default {
 } */
 
 .v3dp__datepicker {
-  padding: 20px !important;
+  --vdp-bg-color: #ffffff;
+  --vdp-text-color: #000000;
+  --vdp-box-shadow: 0 4px 10px 0 rgba(128, 144, 160, 0.1), 0 0 1px 0 rgba(128, 144, 160, 0.81);
+  --vdp-border-radius: 3px;
+  --vdp-heading-size: 2.5em;
+  --vdp-heading-weight: bold;
+  --vdp-heading-hover-color: #eeeeee;
+  --vdp-arrow-color: currentColor;
+  --vdp-elem-color: currentColor;
+  --vdp-disabled-color: #d5d9e0;
+  --vdp-hover-color: #ffffff;
+  --vdp-hover-bg-color: #0baf74;
+  --vdp-selected-color: #ffffff;
+  --vdp-selected-bg-color: #0baf74;
+  --vdp-elem-font-size: 0.8em;
+  --vdp-elem-border-radius: 3px;
+  --vdp-divider-color: #d5d9;
 }
 
 
@@ -480,5 +507,7 @@ a {
   border: 1px solid #1B2B47;
   color: white;
 }
+
+/* .--vdp-bg-color: "#00fffb" */
 /* ============= */
 </style>
