@@ -29,7 +29,7 @@
           <beat-loader :loading="loading" :color="color"></beat-loader>
         </div>
         <div v-else>
-          <div v-if="predict.data">
+          <div v-if="predict.data" >
             <table class="table-hasil">
               <tr>
                 <!-- <th class="idx">No</th> -->
@@ -37,9 +37,9 @@
                 <th class="value">Tag</th>
               </tr>
               <!-- <div v-for="(value, name, index) in predict.data" v-bind:key="index"> -->
-              <div v-for="(d, index) in predict.data" v-bind:key="index">
-                <div v-if="d.tag != 'O'">
-                  <tr>
+              <div class="div-table-hasil" >
+                <div v-for="(d, index) in predict.data" v-bind:key="index">
+                  <tr  v-if="d.tag != 'O'">
                     <div>
                       <td class="name">
                         {{ d.word }}
@@ -204,9 +204,8 @@ export default {
   margin-top: 50px;
 }
 
-.result-prediction {
-  /* background-color: white; */
-  height: 350px;
+.div-table-hasil {
+  height: 400px;
   overflow: auto;
 }
 

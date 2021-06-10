@@ -18,6 +18,10 @@
       </div>
       <h1>Aktualisasi CPNS 2021</h1>
       <h3>Optimalisasi Aplikasi Media Monitoring Opini Publik : <i>Name Entity Recognition</i> <br> pada Judul Berita Online untuk Analisis Isu Strategis Pengawasan di BPKP</h3>
+      <p>Arsitektur Media Monitoring</p>
+      <img src="../../assets/arsitektur_medmon.jpg" class="logo-stack">
+      <p><i>Stack</i> dalam membuat aplikasi</p>
+      <img src="../../assets/stack_aktualisasi.png" class="logo-stack">
     </div>
     <div class="pembimbing">
       <div class="mentor">
@@ -84,7 +88,7 @@ p.status {
   flex-grow: 1;
   text-align: center;
   margin-left: 10px;
-  height: 700px;
+  height: inherit;
   display: flex;
   flex-direction: column;
   /* align-items: center;
@@ -103,12 +107,15 @@ p.status {
 }
 
 .project {
-    text-align: center;
+  box-sizing: border-box;
+  text-align: center;
   flex-grow: 4;
   /* border: 0.5px solid #1B2B47; */
   border: 0.8px solid #1B2B47;
   border-radius: 10px;
-  height: 600px;
+  height: inherit;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
 }
 
 .logo {
@@ -126,6 +133,10 @@ p.status {
 
 .logo-gia {
   height: 40px;
+}
+
+.logo-stack {
+  width: 70%;
 }
 
 img {

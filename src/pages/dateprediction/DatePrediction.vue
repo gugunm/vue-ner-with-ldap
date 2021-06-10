@@ -114,29 +114,46 @@
           <beat-loader :loading="loading" :color="color"></beat-loader>
         </div>
         <div v-else>
+          <div v-if="predict.data" class="vue-toggle">
+            <Toggle class="btn-toggle" v-model="toggleValue" on-label="Judul" off-label="Konten"/>
+          </div>
           <table v-if="predict.data" class="table-hasil">
             <tr>
               <th class="name">Kata</th>
               <th class="value">Tag</th>
             </tr>
-            <div v-for="(d, index) in predict.data.news[idx_result].ner_title" v-bind:key="index">
-              <div v-if="d.tag != 'O'">
-                <tr>
-                  <!-- <div> -->
-                    <td class="name">
-                      {{ d.word }}
-                    </td>
-                    <td class="value">
-                      {{ d.tag != 'O' ? d.tag.split("-")[1] : '-' }}
-                    </td>
-                  <!-- </div> -->
-                </tr>
+            <div class="div-table-hasil">
+              <div v-if="toggleValue" >
+                <div v-for="(d, index) in predict.data.news[idx_result].ner_title" v-bind:key="index">
+                  <tr v-if="d.tag != 'O'">
+                    <!-- <div> -->
+                      <td class="name">
+                        {{ d.word }}
+                      </td>
+                      <td class="value">
+                        {{ d.tag != 'O' ? d.tag.split("-")[1] : '-' }}
+                      </td>
+                    <!-- </div> -->
+                  </tr>
+                </div>
+              </div>
+              <div v-else >
+                <div v-for="(d, index) in predict.data.news[idx_result].ner_content" v-bind:key="index">
+                  <tr v-if="d.tag != 'O'">
+                    <!-- <div> -->
+                      <td class="name">
+                        {{ d.word }}
+                      </td>
+                      <td class="value">
+                        {{ d.tag != 'O' ? d.tag.split("-")[1] : '-' }}
+                      </td>
+                    <!-- </div> -->
+                  </tr>
+                </div>
               </div>
             </div>
           </table>
-          <div v-else>
-            <p style="font-size:14px; text-align:center; padding-top:40px;"><i>belum memilih berita</i></p>
-          </div>
+          <p  v-else-if="!predict.data" style="font-size:14px; text-align:center; padding-top:50px;"><i>belum memilih berita</i></p>
         </div>
       </div>
     </div>
@@ -149,12 +166,14 @@ import axios from 'axios'
 import BeatLoader from 'vue-spinner/src/BeatLoader.vue'
 import Datepicker from 'vue3-datepicker'
 import { add } from 'date-fns'
+import Toggle from '@vueform/toggle'
 
 export default {
   name: "dateprediction",
   components: {
     BeatLoader,
-    Datepicker
+    Datepicker,
+    Toggle
   },
   data () {
     return {
@@ -167,7 +186,8 @@ export default {
       pickedDate: '',
       newsByDate: null,
       limit: 10,
-      tomorrow: add(new Date(),{days: 0 })
+      tomorrow: add(new Date(),{days: 0 }),
+      toggleValue: true
     }
   },
   methods: {
@@ -195,6 +215,7 @@ export default {
       .then(response => {
         // this.predict = JSON.parse(JSON.stringify(response.data))
         this.predict = response.data
+        console.log(response.data)
         this.loading = false
       })
       .catch(error => {
@@ -205,6 +226,7 @@ export default {
 }
 </script>
 
+<style src="@vueform/toggle/themes/default.css"></style>
 <style scoped>
 /* Global */
 .page-prediction {
@@ -256,11 +278,6 @@ export default {
   text-align: left;
 }
 
-/* .date-picker {
-  display: block;
-  width: 100%;
-} */
-
 .v3dp__datepicker {
   --vdp-bg-color: #ffffff;
   --vdp-text-color: #000000;
@@ -304,7 +321,6 @@ export default {
   width: 48%; 
   padding: 10px;
   cursor: pointer;
-  /* margin-bottom: 5px; */
   margin: 1%;
 }
 
@@ -435,11 +451,55 @@ a {
 .judul-hasil {
   padding-left: 5px;
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
+}
+
+.vue-toggle {
+  display: flex;
+  /* height: inherit; */
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+
+.btn-toggle {
+  --toggle-width: 7rem;
+  --toggle-height: 2rem;
+  --toggle-border: 0.2rem;
+  --toggle-font-size: 0.85rem;
+  --toggle-duration: 200ms;
+  --toggle-bg-on: #1B2B47;
+  --toggle-bg-off: #e5e7eb;
+  --toggle-bg-on-disabled: #d1d5db;
+  --toggle-bg-off-disabled: #e5e7eb;
+  --toggle-border-on: #1B2B47;
+  --toggle-border-off: #e5e7eb;
+  --toggle-border-on-disabled: #d1d5db;
+  --toggle-border-off-disabled: #e5e7eb;
+  --toggle-text-on: #ffffff;
+  --toggle-text-off: #1B2B47;
+  --toggle-text-on-disabled: #9ca3af;
+  --toggle-text-off-disabled: #9ca3af;
+  --toggle-handle-enabled: #ffffff;
+  --toggle-handle-disabled: #f3f4f6;
+  --toggle-handle-width: 40px;
 }
 
 
-.result-prediction {
+.switch-btn button {
+  width: 49%;
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #1B2B47;
+  border-radius: 3px;
+} 
+
+
+/* .result-prediction {
+  height: 400px;
+  overflow: auto;
+} */
+
+.div-table-hasil {
   height: 500px;
   overflow: auto;
 }
@@ -463,6 +523,7 @@ a {
 .table-hasil th.value {
   text-align: center;
   margin-bottom: 10px;
+  margin-top: 20px;
 }
 
 .table-hasil td,
@@ -504,6 +565,5 @@ a {
   color: white;
 }
 
-/* .--vdp-bg-color: "#00fffb" */
 /* ============= */
 </style>
